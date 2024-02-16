@@ -1,8 +1,14 @@
-import { useQuery } from "@apollo/client";
-import { MAIN_LIST } from "../Services/Queries";
-import chunk from "lodash.chunk";
 import { StatusIcon } from "../Assets/Icons/StatusIcon";
-import { Swiper, SwiperSlide } from "swiper/react";
+import Slider from "react-slick";
+const settings = {
+  infinite: true,
+  slidesToShow: 3,
+  slidesToScroll: 1,
+  autoplay: true,
+  speed: 2000,
+  autoplaySpeed: 3000,
+  swipeToSlide: true,
+};
 
 type Characters = {
   id: number;
@@ -16,32 +22,17 @@ type Characters = {
   episode: { name: string }[];
 };
 
-const Character = () => {
-  const { data } = useQuery(MAIN_LIST);
-
+const CharactersSlider = ({ data }: { data: Characters[] }) => {
   if (!data) return <div>Loading...</div>;
-
-  //const charactersChunk = data && chunk(data.characters.results, 10);
 
   console.log(data);
 
   return (
-    <Swiper>
-      {data &&
-        data.characters.results.map(
-          ({
-            image,
-            name,
-            status,
-            species,
-            location,
-            episode,
-            id,
-          }: Characters) => (
-            <SwiperSlide
-              key={id}
-              className="w-[600px] h-[220px] flex bg-character rounded-lg m-3"
-            >
+    <div className="max-w-[1860px] h-[260px]">
+      <Slider {...settings}>
+        {data.map(({ image, name, status, species, location, episode, id }) => (
+          <div key={id}>
+            <div className="w-[600px] h-[220px] flex bg-character rounded-lg m-3">
               <img src={image} className="rounded-l-lg" />
               <div className="grid text-white p-3">
                 <p className="text-2xl">{name}</p>
@@ -60,11 +51,12 @@ const Character = () => {
                   {episode[0].name}
                 </div>
               </div>
-            </SwiperSlide>
-          )
-        )}
-    </Swiper>
+            </div>
+          </div>
+        ))}
+      </Slider>
+    </div>
   );
 };
 
-export default Character;
+export default CharactersSlider;
