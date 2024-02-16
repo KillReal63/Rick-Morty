@@ -544,6 +544,18 @@
   resolved "https://registry.yarnpkg.com/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.10.0.tgz#4eedd01af3a82c1acb0fe6d837ebf339c4cbf839"
   integrity sha512-OZoJd+o5TaTSQeFFQ6WjFCiltiYVjIdsXxwu/XZ8qRpsvMQr4UsVrE5UyT9RIvsnuF47DqkJKhhVZ2Q9YW9IpQ==
 
+"@tanstack/react-table@^8.12.0":
+  version "8.12.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-table/-/react-table-8.12.0.tgz#069210657f9f6c6c17584cc955a8ebb25b8642f8"
+  integrity sha512-LlEQ1Gpz4bfpiET+qmle4BhKDgKN3Y/sssc+O/wLqX8HRtjV+nhusYbllZlutZfMR8oeef83whKTj/VhaV8EeA==
+  dependencies:
+    "@tanstack/table-core" "8.12.0"
+
+"@tanstack/table-core@8.12.0":
+  version "8.12.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/table-core/-/table-core-8.12.0.tgz#ada34e17ca761fed99353b48e8cb7deacc971025"
+  integrity sha512-cq/ylWVrOwixmwNXQjgZaQw1Izf7+nPxjczum7paAnMtwPg1S2qRAJU+Jb8rEBUWm69voC/zcChmePlk2hc6ug==
+
 "@testing-library/user-event@^14.3.0":
   version "14.5.2"
   resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-14.5.2.tgz#db7257d727c891905947bd1c1a99da20e03c2ebd"

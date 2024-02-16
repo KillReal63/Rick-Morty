@@ -9,8 +9,6 @@ const Main = () => {
     variables: { page: 12 },
   });
 
-  //const charactersChunk = data && chunk(data.characters.results, 10);
-
   return (
     <div className="w-full grid justify-center bg-text">
       {firstCharactersSlider.data && (

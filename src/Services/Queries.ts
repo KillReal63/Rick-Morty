@@ -9,6 +9,10 @@ export const MAIN_LIST = gql`
         status
         species
         image
+        gender
+        origin {
+          name
+        }
         location {
           name
         }

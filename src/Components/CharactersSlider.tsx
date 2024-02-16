@@ -10,22 +10,24 @@ const settings = {
   swipeToSlide: true,
 };
 
-type Characters = {
+export type TCharacters = {
   id: number;
   image: string;
   name: string;
   status: "Alive" | "Dead" | "unknown";
   species: string;
+  gender: string;
+  origin: {
+    name: string;
+  };
   location: {
     name: string;
   };
   episode: { name: string }[];
 };
 
-const CharactersSlider = ({ data }: { data: Characters[] }) => {
+const CharactersSlider = ({ data }: { data: TCharacters[] }) => {
   if (!data) return <div>Loading...</div>;
-
-  console.log(data);
 
   return (
     <div className="max-w-[1860px] h-[260px]">
