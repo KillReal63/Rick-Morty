@@ -15,6 +15,11 @@ export const MAIN_LIST = gql`
         }
         location {
           name
+          type
+          dimension
+          residents {
+            name
+          }
         }
         episode {
           name

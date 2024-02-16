@@ -8,10 +8,12 @@ const Footer = () => {
   const { data } = useQuery(MAIN_LIST, { variables: { page: page } });
 
   return (
-    <div>
-      <CharactersTable data={data?.characters.results} />
-      <button onClick={() => setPage((prevValue) => prevValue + 1)}>+</button>
-    </div>
+    data && (
+      <div>
+        <CharactersTable characters={data.characters.results} />
+        <button onClick={() => setPage((prevValue) => prevValue + 1)}>+</button>
+      </div>
+    )
   );
 };
 

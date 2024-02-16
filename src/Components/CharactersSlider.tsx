@@ -22,6 +22,11 @@ export type TCharacters = {
   };
   location: {
     name: string;
+    type: string;
+    dimension: string;
+    residents: {
+      name: string;
+    }[];
   };
   episode: { name: string }[];
 };
