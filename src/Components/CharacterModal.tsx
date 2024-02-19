@@ -18,36 +18,39 @@ const CharacterModal: FC<Props> = ({ character }) => {
 
   return (
     <div className="flex flex-col m-3 rounded-xl">
-      <img src={character.image} />О пресонаже
-      <div className="grid p-3">
-        <p className="text-2xl">{character.name}</p>
-        <div className="flex items-center">
-          <StatusIcon status={character.status} />
-          <p>{character.status}</p>
+      <div className="flex">
+        <img src={character.image} className="w-[350px] h-[350px]" />
+        <div className="p-3">
+          <div className="flex justify-around w-[800px] my-2">
+            <p>№{character.id}</p>
+            <p className="text-2xl">{character.name}</p>
+            <div className="flex items-center">
+              <StatusIcon status={character.status} />
+              <p>{character.status}</p>
+            </div>
+          </div>
+          <div className="flex justify-center my-2">
+            <p>Вид: {character.species}</p>
+            <p className="mx-auto">Пол: {character.gender}</p>
+            <p>Происхождение: {character.origin.name}</p>
+          </div>
+          Местоположение
+          <div className="grid w-full">
+            <p>Измерение: {character.location.dimension}</p>
+            <p>Тип планеты: {character.location.type}</p>
+            <p>Название: {character.location.name}</p>
+            <div className="h-[200px] overflow-scroll">
+              Список резидентов:
+              {character.location.residents.map(({ name }, index: number) => (
+                <p key={index}>{name}</p>
+              ))}
+            </div>
+          </div>
         </div>
-        Вид:
-        <p>{character.species}</p>
-        Пол:
-        <p>{character.gender}</p>
-        Происхождение:
-        <p>{character.origin.name}</p>
       </div>
-      местоположение
       <div>
-        измерение
-        <p>{character.location.dimension}</p>
-        тип планеты
-        <p>{character.location.type}</p>
-        название планеты
-        <p>{character.location.name}</p>
-        Список резидентов
-        <div className="h-[200px] overflow-scroll">
-          {character.location.residents.map(({ name }, index: number) => (
-            <p key={index}>{name}</p>
-          ))}
-        </div>
         эпизоды
-        <div>
+        <div className="h-[150px] overflow-scroll">
           {character.episode.map(
             (
               {
