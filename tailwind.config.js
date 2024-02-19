@@ -9,6 +9,8 @@ export default {
         text_gray: "rgb(158, 158, 158)",
         table_header: "rgb(0,152,121)",
         even: "rgb(243, 243, 243)",
+        modal_overlay: "rgba(28, 28, 33, 0.4)",
+        modal: '#FFFFFF'
       },
     },
   },

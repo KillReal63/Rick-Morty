@@ -28,3 +28,36 @@ export const MAIN_LIST = gql`
     }
   }
 `;
+
+export const GET_CHARACTER = gql`
+  query GET_CHARACTER($id: ID!) {
+    character(id: $id) {
+      id
+      name
+      status
+      species
+      image
+      gender
+      origin {
+        name
+      }
+      location {
+        name
+        type
+        dimension
+        residents {
+          name
+        }
+      }
+      episode {
+        id
+        name
+        air_date
+        episode
+        characters {
+          name
+        }
+      }
+    }
+  }
+`;
