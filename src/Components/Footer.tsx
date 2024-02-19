@@ -9,9 +9,13 @@ const Footer = () => {
 
   return (
     data && (
-      <div>
+      <div className="flex flex-col">
         <CharactersTable characters={data.characters.results} />
+        <div className="flex w-full justify-around mb-8">
+        <button onClick={() => setPage((prevValue) => prevValue !== 1 ? prevValue - 1 : 1)}>-</button>
+        {page}
         <button onClick={() => setPage((prevValue) => prevValue + 1)}>+</button>
+        </div>
       </div>
     )
   );

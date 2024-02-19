@@ -15,6 +15,11 @@ const columns = [
     header: "Characters",
     footer: (info) => info.column.id,
     columns: [
+      columnHelper.accessor("id", {
+        header: "№",
+        cell: (info) => info.getValue(),
+        footer: (info) => info.column.id,
+      }),
       columnHelper.accessor("name", {
         header: "Name",
         cell: (info) => info.getValue(),
@@ -80,8 +85,6 @@ type Props = {
 };
 
 const CharactersTable: FC<Props> = ({ characters }) => {
-  console.log(characters);
-
   const table = useReactTable({
     data: characters,
     columns,
@@ -91,12 +94,16 @@ const CharactersTable: FC<Props> = ({ characters }) => {
   return (
     characters && (
       <>
-        <table>
-          <thead>
+        <table className="border-collapse my-6 font text-base rounded-t-md overflow-hidden overflow-x-none">
+          <thead className="bg-table_header text-white text-left font-bold scroll">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <th key={header.id} colSpan={header.colSpan}>
+                  <th
+                    key={header.id}
+                    colSpan={header.colSpan}
+                    className="py-3 px-4"
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -110,9 +117,17 @@ const CharactersTable: FC<Props> = ({ characters }) => {
           </thead>
           <tbody>
             {table.getRowModel().rows.map((row) => (
-              <tr key={row.id}>
+              <tr
+                key={row.id}
+                className="border-solid border-b-2 even:bg-even last-of-type:border-b-4 last-of-type:border-table_header"
+              >
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id}>
+                  <td
+                    key={cell.id}
+                    className={`py-3 px-4 ${
+                      cell.getValue() === "Alive" ? "text-green-600" : null
+                    } ${cell.getValue() === "Dead" ? "text-red-600" : null}`}
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}

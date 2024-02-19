@@ -7,6 +7,8 @@ export default {
         text: "rgb(32, 35, 41)",
         character: "rgb(60, 62, 68)",
         text_gray: "rgb(158, 158, 158)",
+        table_header: "rgb(0,152,121)",
+        even: "rgb(243, 243, 243)",
       },
     },
   },

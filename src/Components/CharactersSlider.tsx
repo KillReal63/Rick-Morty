@@ -35,7 +35,7 @@ const CharactersSlider = ({ data }: { data: TCharacters[] }) => {
   if (!data) return <div>Loading...</div>;
 
   return (
-    <div className="max-w-[1860px] h-[260px]">
+    <div className="max-w-[1850px] h-[260px]">
       <Slider {...settings}>
         {data.map(({ image, name, status, species, location, episode, id }) => (
           <div key={id}>
