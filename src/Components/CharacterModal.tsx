@@ -44,7 +44,7 @@ const CharacterModal: FC<Props> = ({ character }) => {
             <div className="w-full h-[200px] overflow-y-scroll">
               <p>Список резидентов планеты:</p>
               {character.location.residents.map(({ name }, index: number) => (
-                <p key={index}>{name}</p>
+                <span key={index}> {index === 0 ? name : `, ${name}`}</span>
               ))}
             </div>
           </div>
@@ -70,8 +70,8 @@ const CharacterModal: FC<Props> = ({ character }) => {
               },
               index
             ) => (
-              <div key={index}>
-                <div onClick={() => setOpen(open)}>
+              <div key={index} className="cursor-pointer">
+                <div onClick={() => setOpen(!open)}>
                   <p>{episode}</p>
                   <p>{name}</p>
                 </div>
