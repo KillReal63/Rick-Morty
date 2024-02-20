@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { StatusIcon } from "../Assets/Icons/StatusIcon";
 import { TCharacters } from "./CharactersSlider";
 
@@ -14,33 +14,35 @@ type Props = {
 };
 
 const CharacterModal: FC<Props> = ({ character }) => {
+  const [open, setOpen] = useState(false);
+
   console.log(character, "characket");
 
   return (
     <div className="flex flex-col m-3 rounded-xl">
       <div className="flex">
-        <img src={character.image} className="w-[350px] h-[350px]" />
-        <div className="p-3">
-          <div className="flex justify-around w-[800px] my-2">
+        <img src={character.image} className="w-[375px] h-[375px]" />
+        <div className="w-[900px] grid grid-rows-[60px_300px] grid-cols-1 p-3">
+          <div className="grid grid-cols-3 grid-rows-2 place-items-center">
             <p>№{character.id}</p>
             <p className="text-2xl">{character.name}</p>
             <div className="flex items-center">
               <StatusIcon status={character.status} />
               <p>{character.status}</p>
             </div>
-          </div>
-          <div className="flex justify-center my-2">
             <p>Вид: {character.species}</p>
             <p className="mx-auto">Пол: {character.gender}</p>
             <p>Происхождение: {character.origin.name}</p>
           </div>
-          Местоположение
-          <div className="grid w-full">
-            <p>Измерение: {character.location.dimension}</p>
-            <p>Тип планеты: {character.location.type}</p>
-            <p>Название: {character.location.name}</p>
-            <div className="h-[200px] overflow-scroll">
-              Список резидентов:
+          <div className="grid grid-rows-[50px_50px_200px] w-full place-items-center">
+            <p>Местоположение</p>
+            <div className="w-full grid grid-cols-3  place-items-center">
+              <p>Измерение: {character.location.dimension}</p>
+              <p>Тип планеты: {character.location.type}</p>
+              <p>Название: {character.location.name}</p>
+            </div>
+            <div className="w-full h-[200px] overflow-y-scroll">
+              <p>Список резидентов планеты:</p>
               {character.location.residents.map(({ name }, index: number) => (
                 <p key={index}>{name}</p>
               ))}
@@ -49,8 +51,8 @@ const CharacterModal: FC<Props> = ({ character }) => {
         </div>
       </div>
       <div>
-        эпизоды
-        <div className="h-[150px] overflow-scroll">
+        <p>Эпизоды</p>
+        <div className="h-[250px] overflow-y-scroll">
           {character.episode.map(
             (
               {
@@ -69,20 +71,24 @@ const CharacterModal: FC<Props> = ({ character }) => {
               index
             ) => (
               <div key={index}>
-                имя
-                <p>{name}</p>
-                дата выхода
-                <p>{air_date}</p>
-                код серии
-                <p>{episode}</p>
-                список персонажей
-                <div className="h-[100px] overflow-scroll">
-                  {characters.map(
-                    ({ name }: { name: string }, index: number) => (
-                      <p key={index}>{name}</p>
-                    )
-                  )}
+                <div onClick={() => setOpen(open)}>
+                  <p>{episode}</p>
+                  <p>{name}</p>
                 </div>
+                {open && (
+                  <div>
+                    <p>{name}</p>
+                    <p>{air_date}</p>
+                    <div>
+                      <p>Список персонажей в серии:</p>
+                      {characters.map(
+                        ({ name }: { name: string }, index: number) => (
+                          <p key={index}>{name}</p>
+                        )
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             )
           )}

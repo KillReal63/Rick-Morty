@@ -151,7 +151,7 @@ const CharactersTable: FC<Props> = ({ characters }) => {
             {table.getRowModel().rows.map((row) => (
               <tr
                 key={row.id}
-                className="border-solid border-b-2 even:bg-even last-of-type:border-b-4 last-of-type:border-table_header whitespace-nowrap"
+                className="border-solid border-b-2 even:bg-even last-of-type:border-b-4 last-of-type:border-table_header whitespace-nowrap hover:text-green-600"
               >
                 {row.getVisibleCells().map((cell) => (
                   <td
