@@ -1,11 +1,19 @@
 import { useQuery } from "@apollo/client";
-import React, { useState } from "react";
+import { useState, KeyboardEvent } from "react";
 import { MAIN_LIST } from "../Services/Queries";
 import CharactersTable from "./CharactersTable";
 
 const Footer = () => {
   const [page, setPage] = useState(1);
+  const [inputValue, setInputValue] = useState(1);
+
   const { data } = useQuery(MAIN_LIST, { variables: { page: page } });
+
+  const handleKeyPress = (key, value) => {
+    if (key === "Enter") {
+      setPage(Number(value));
+    }
+  };
 
   return (
     data && (
@@ -33,7 +41,22 @@ const Footer = () => {
               <polyline points="18 17 13 12 18 7" />
             </svg>
           </button>
-          <p className="font-bold text-2xl mx-4">{page}</p>
+
+          <input
+            type="text"
+            className="max-w-8 font-bold text-2xl appearance-none text-center"
+            value={inputValue}
+            onChange={(e) => setInputValue(Number(e.target.value))}
+            onFocus={() =>
+              document.addEventListener("keypress", ({ key, target: { value } }) => handleKeyPress(key, value))
+            }
+            onBlur={() =>
+              document.removeEventListener("keypress", () => handleKeyPress())
+            }
+            maxLength={2}
+            min={1}
+          />
+
           <button onClick={() => setPage((prevValue) => prevValue + 1)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"

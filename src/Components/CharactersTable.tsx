@@ -18,13 +18,14 @@ type Props = {
 
 const CharactersTable: FC<Props> = ({ characters }) => {
   const [open, setOpen] = useState(false);
-  const [characterId, setCharacterId] = useState("0");
+
+  const [characterId, setCharacterId] = useState(0);
 
   const { data } = useQuery(GET_CHARACTER, {
-    variables: { id: parseInt(characterId) + 1 },
+    variables: { id: characterId },
   });
 
-  const handleToggleModal = (id: string) => {
+  const handleToggleModal = (id: number) => {
     setCharacterId(id);
     setOpen(!open);
   };
@@ -46,18 +47,11 @@ const CharactersTable: FC<Props> = ({ characters }) => {
           header: "Name",
           cell: (info) => {
             return (
-              data && (
-                <>
-                  <button onClick={() => handleToggleModal(info.row.id)}>
-                    {info.getValue()}
-                  </button>
-                  {open && (
-                    <Modal onClose={() => setOpen(false)} open={open}>
-                      <CharacterModal character={data.character} />
-                    </Modal>
-                  )}
-                </>
-              )
+              <>
+                <button onClick={() => handleToggleModal(info.row.original.id)}>
+                  {info.getValue()}
+                </button>
+              </>
             );
           },
           footer: (info) => info.column.id,
@@ -126,8 +120,8 @@ const CharactersTable: FC<Props> = ({ characters }) => {
   return (
     characters && (
       <>
-        <table className="border-collapse my-6 font text-base rounded-t-md overflow-hidden">
-          <thead className="bg-table_header text-white text-left font-bold scroll">
+        <table className="border-collapse my-6 font text-base rounded-t-md">
+          <thead className="bg-table_header text-white text-left font-bold">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
@@ -168,6 +162,11 @@ const CharactersTable: FC<Props> = ({ characters }) => {
             ))}
           </tbody>
         </table>
+        {data && open && (
+          <Modal onClose={() => setOpen(false)} open={open}>
+            <CharacterModal character={data.character} />
+          </Modal>
+        )}
       </>
     )
   );
