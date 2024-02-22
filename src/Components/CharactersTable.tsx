@@ -116,59 +116,59 @@ const CharactersTable: FC<Props> = ({ characters }) => {
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+  //наложить спинер-лоадер
+  //if (!characters || !data) return <div className="lds-dual-ring"></div>;
 
   return (
-    characters && (
-      <>
-        <table className="border-collapse my-6 font text-base rounded-t-md">
-          <thead className="bg-table_header text-white text-left font-bold">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    colSpan={header.colSpan}
-                    className="py-3 px-4"
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr
-                key={row.id}
-                className="border-solid border-b-2 even:bg-even last-of-type:border-b-4 last-of-type:border-table_header whitespace-nowrap hover:text-green-600"
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <td
-                    key={cell.id}
-                    className={classNames("py-3 px-4", {
-                      "text-green-600": cell.getValue() === "Alive",
-                      "text-red-600": cell.getValue() === "Dead",
-                    })}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {data && open && (
-          <Modal onClose={() => setOpen(false)} open={open}>
-            <CharacterModal character={data.character} />
-          </Modal>
-        )}
-      </>
-    )
+    <>
+      <table className="border-collapse my-6 font text-base rounded-t-md">
+        <thead className="bg-table_header text-white text-left font-bold">
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <th
+                  key={header.id}
+                  colSpan={header.colSpan}
+                  className="py-3 px-4"
+                >
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {table.getRowModel().rows.map((row) => (
+            <tr
+              key={row.id}
+              className="border-solid border-b-2 even:bg-even last-of-type:border-b-4 last-of-type:border-table_header whitespace-nowrap hover:text-green-600"
+            >
+              {row.getVisibleCells().map((cell) => (
+                <td
+                  key={cell.id}
+                  className={classNames("py-3 px-4", {
+                    "text-green-600": cell.getValue() === "Alive",
+                    "text-red-600": cell.getValue() === "Dead",
+                  })}
+                >
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {data && open && (
+        <Modal onClose={() => setOpen(false)} open={open}>
+          <CharacterModal character={data.character} />
+        </Modal>
+      )}
+    </>
   );
 };
 

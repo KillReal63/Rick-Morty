@@ -7,11 +7,36 @@ const Footer = () => {
   const [page, setPage] = useState(1);
   const [inputValue, setInputValue] = useState(1);
 
+  const switchPage = (variant: string) => {
+    switch (variant) {
+      case "next":
+        setPage((prevValue) => prevValue + 1);
+        setInputValue((prevValue) => prevValue + 1);
+        break;
+      case "previous":
+        if (page - 1 >= 1) {
+          setPage((prevValue) => prevValue - 1);
+          setInputValue((prevValue) => prevValue - 1);
+        }
+        break;
+      case "first":
+        setPage(1);
+        setInputValue(1);
+        break;
+    }
+  };
+
   const { data } = useQuery(MAIN_LIST, { variables: { page: page } });
 
-  const handleKeyPress = (key, value) => {
-    if (key === "Enter") {
-      setPage(Number(value));
+  const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>): void => {
+    const target = event.target as HTMLInputElement;
+
+    if (event.key === "Enter" && target.value !== undefined) {
+      setPage(Number(target.value));
+    }
+
+    if (target.value === "0") {
+      switchPage("first");
     }
   };
 
@@ -20,11 +45,7 @@ const Footer = () => {
       <div className="flex flex-col">
         <CharactersTable characters={data.characters.results} />
         <div className="flex w-full justify-center items-center mb-8">
-          <button
-            onClick={() =>
-              setPage((prevValue) => (prevValue !== 1 ? prevValue - 1 : 1))
-            }
-          >
+          <button onClick={() => switchPage("previous")}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -44,20 +65,27 @@ const Footer = () => {
 
           <input
             type="text"
+            min={1}
+            maxLength={2}
             className="max-w-8 font-bold text-2xl appearance-none text-center"
             value={inputValue}
             onChange={(e) => setInputValue(Number(e.target.value))}
             onFocus={() =>
-              document.addEventListener("keypress", ({ key, target: { value } }) => handleKeyPress(key, value))
+              document.addEventListener(
+                "keypress",
+                handleKeyPress as unknown as EventListener
+              )
             }
             onBlur={() =>
-              document.removeEventListener("keypress", () => handleKeyPress())
+              document.removeEventListener(
+                "keypress",
+                handleKeyPress as unknown as EventListener
+              )
             }
-            maxLength={2}
-            min={1}
+            onKeyDown={handleKeyPress}
           />
 
-          <button onClick={() => setPage((prevValue) => prevValue + 1)}>
+          <button onClick={() => switchPage("next")}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
