@@ -61,3 +61,28 @@ export const GET_CHARACTER = gql`
     }
   }
 `;
+
+export const FILTER_CHARACTERS = gql`
+  query FILTER_CHARACTERS($filter: FilterCharacter) {
+    characters(filter: $filter) {
+      results {
+        id
+        name
+        status
+        species
+        gender
+        origin {
+          name
+        }
+        location {
+          name
+          type
+          dimension
+          residents {
+            name
+          }
+        }
+      }
+    }
+  }
+`;

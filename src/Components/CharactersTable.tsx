@@ -121,7 +121,7 @@ const CharactersTable: FC<Props> = ({ characters }) => {
 
   return (
     <>
-      <table className="border-collapse my-6 font text-base rounded-t-md">
+      <table className="border-collapse mb-4 font text-base ">
         <thead className="bg-table_header text-white text-left font-bold">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -164,7 +164,7 @@ const CharactersTable: FC<Props> = ({ characters }) => {
         </tbody>
       </table>
       {data && open && (
-        <Modal onClose={() => setOpen(false)} open={open}>
+        <Modal onClose={setOpen} open={open}>
           <CharacterModal character={data.character} />
         </Modal>
       )}

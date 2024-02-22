@@ -1,11 +1,18 @@
 import { useQuery } from "@apollo/client";
-import { useState, KeyboardEvent } from "react";
+import { useState, KeyboardEvent, FC } from "react";
 import { MAIN_LIST } from "../Services/Queries";
 import CharactersTable from "./CharactersTable";
+import FilterBar from "./FilterBar";
 
-const Footer = () => {
+const Footer: FC = () => {
   const [page, setPage] = useState(1);
   const [inputValue, setInputValue] = useState(1);
+  //const [filterCharacters, setFilterCharacters] = useState({});
+
+  const { data } = useQuery(MAIN_LIST, { variables: { page: page } });
+  //const filterData = useQuery()
+
+  //const onSumbit = (data) => console.log(data);
 
   const switchPage = (variant: string) => {
     switch (variant) {
@@ -26,9 +33,7 @@ const Footer = () => {
     }
   };
 
-  const { data } = useQuery(MAIN_LIST, { variables: { page: page } });
-
-  const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>): void => {
+  const handleKeyPress = (event: KeyboardEvent): void => {
     const target = event.target as HTMLInputElement;
 
     if (event.key === "Enter" && target.value !== undefined) {
@@ -43,7 +48,9 @@ const Footer = () => {
   return (
     data && (
       <div className="flex flex-col">
+        <FilterBar />
         <CharactersTable characters={data.characters.results} />
+
         <div className="flex w-full justify-center items-center mb-8">
           <button onClick={() => switchPage("previous")}>
             <svg
@@ -62,7 +69,6 @@ const Footer = () => {
               <polyline points="18 17 13 12 18 7" />
             </svg>
           </button>
-
           <input
             type="text"
             min={1}
@@ -84,7 +90,6 @@ const Footer = () => {
             }
             onKeyDown={handleKeyPress}
           />
-
           <button onClick={() => switchPage("next")}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
