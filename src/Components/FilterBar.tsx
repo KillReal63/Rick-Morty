@@ -1,28 +1,23 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { MouseEvent, useState } from "react";
+import { useFormContext } from "react-hook-form";
 import ControllerSelects from "./ControllerSelects";
-import { useQuery } from "@apollo/client";
-import { FILTER_CHARACTERS } from "../Services/Queries";
 import {
   genderOptions,
   speciesOptions,
   statusOptions,
 } from "../Services/Options";
 
-const FilterBar = () => {
+const FilterBar = ({
+  onSubmit,
+}: {
+  onSubmit: (e: MouseEvent<HTMLButtonElement>) => void;
+}) => {
   const [open, setOpen] = useState<boolean>(false);
-  const [queryFilter, setQueryFilter] = useState<string>("");
 
-  const { register, handleSubmit, control } = useForm();
-
-  const { data } = useQuery(FILTER_CHARACTERS, {
-    variables: { filter: { queryFilter } },
-  });
-
-  console.log(data);
+  const { register, control } = useFormContext();
 
   return (
-    <>
+    <div>
       <div
         className="w-full h-10 flex justify-between px-3 items-center bg-table_header border-solid border-white border-b-2 rounded-b-lg cursor-pointer"
         onClick={() => setOpen(!open)}
@@ -67,8 +62,9 @@ const FilterBar = () => {
           <input
             placeholder="Поиск по имени"
             className="w-[250px] border-2 p-1 rounded-md"
-            required
-            pattern="[a-zA-Z0-9]"
+            {...register("name", {
+              pattern: /[a-zA-Z0-9]/,
+            })}
           />
           <ControllerSelects
             name={"gender"}
@@ -77,7 +73,7 @@ const FilterBar = () => {
             options={genderOptions}
           />
           <ControllerSelects
-            name={"spices"}
+            name={"species"}
             label={"Вид"}
             control={control}
             options={speciesOptions}
@@ -88,7 +84,7 @@ const FilterBar = () => {
             control={control}
             options={statusOptions}
           />
-          <button>
+          <button onClick={(e) => onSubmit(e)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -107,7 +103,7 @@ const FilterBar = () => {
           </button>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

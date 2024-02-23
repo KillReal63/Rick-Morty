@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const MAIN_LIST = gql`
-  query MAIN_LIST($page: Int) {
-    characters(page: $page) {
+  query MAIN_LIST($page: Int, $filter: FilterCharacter) {
+    characters(page: $page, filter: $filter) {
       results {
         id
         name
@@ -56,31 +56,6 @@ export const GET_CHARACTER = gql`
         episode
         characters {
           name
-        }
-      }
-    }
-  }
-`;
-
-export const FILTER_CHARACTERS = gql`
-  query FILTER_CHARACTERS($filter: FilterCharacter) {
-    characters(filter: $filter) {
-      results {
-        id
-        name
-        status
-        species
-        gender
-        origin {
-          name
-        }
-        location {
-          name
-          type
-          dimension
-          residents {
-            name
-          }
         }
       }
     }

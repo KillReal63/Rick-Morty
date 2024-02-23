@@ -17,9 +17,9 @@ type Props = {
 };
 
 const CharactersTable: FC<Props> = ({ characters }) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
 
-  const [characterId, setCharacterId] = useState(0);
+  const [characterId, setCharacterId] = useState<number>(0);
 
   const { data } = useQuery(GET_CHARACTER, {
     variables: { id: characterId },
@@ -121,7 +121,7 @@ const CharactersTable: FC<Props> = ({ characters }) => {
 
   return (
     <>
-      <table className="border-collapse mb-4 font text-base ">
+      <table className="w-full border-collapse mb-4 font text-base">
         <thead className="bg-table_header text-white text-left font-bold">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>

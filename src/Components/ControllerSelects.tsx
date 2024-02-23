@@ -20,8 +20,8 @@ const ControllerSelects = ({
       <Controller
         name={name}
         control={control}
-        render={({ field }) => (
-          <Select {...field} options={options} placeholder={label} />
+        render={({ field: { ref, ...field } }) => (
+          <Select options={options} placeholder={label} ref={ref} {...field} />
         )}
       />
     </div>

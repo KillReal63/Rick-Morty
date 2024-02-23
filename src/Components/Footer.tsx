@@ -3,16 +3,37 @@ import { useState, KeyboardEvent, FC } from "react";
 import { MAIN_LIST } from "../Services/Queries";
 import CharactersTable from "./CharactersTable";
 import FilterBar from "./FilterBar";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+
+type FormValues = {
+  name: string;
+  gender: { value: string };
+  species: { value: string };
+  status: { value: string };
+};
 
 const Footer: FC = () => {
   const [page, setPage] = useState(1);
   const [inputValue, setInputValue] = useState(1);
-  //const [filterCharacters, setFilterCharacters] = useState({});
+  const [filterCharacters, setFilterCharacters] = useState({});
+  const methods = useForm();
+  const { data } = useQuery(MAIN_LIST, {
+    variables: { page: page, filter: filterCharacters },
+  });
 
-  const { data } = useQuery(MAIN_LIST, { variables: { page: page } });
-  //const filterData = useQuery()
-
-  //const onSumbit = (data) => console.log(data);
+  const onSubmit: SubmitHandler<FormValues> = ({
+    name,
+    gender,
+    species,
+    status,
+  }) => {
+    setFilterCharacters({
+      name: name ? name : "",
+      gender: gender ? gender.value : "",
+      species: species ? species.value : "",
+      status: status ? status.value : "",
+    });
+  };
 
   const switchPage = (variant: string) => {
     switch (variant) {
@@ -48,9 +69,12 @@ const Footer: FC = () => {
   return (
     data && (
       <div className="flex flex-col">
-        <FilterBar />
-        <CharactersTable characters={data.characters.results} />
-
+        <FormProvider {...methods}>
+          <form>
+            <FilterBar onSubmit={methods.handleSubmit(onSubmit)} />
+            <CharactersTable characters={data.characters.results} />
+          </form>
+        </FormProvider>
         <div className="flex w-full justify-center items-center mb-8">
           <button onClick={() => switchPage("previous")}>
             <svg

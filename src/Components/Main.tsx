@@ -1,6 +1,5 @@
 import { useQuery } from "@apollo/client";
 import { MAIN_LIST } from "../Services/Queries";
-
 import CharactersSlider from "./CharactersSlider";
 
 const Main = () => {

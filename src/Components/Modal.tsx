@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren, useEffect } from "react";
-import ModalOverlay from "./ModalOverlay";
 import { createPortal } from "react-dom";
+import ModalOverlay from "./ModalOverlay";
 
 type Props = {
   onClose: (open: boolean) => void;
