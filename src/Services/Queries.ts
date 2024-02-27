@@ -3,6 +3,9 @@ import { gql } from "@apollo/client";
 export const MAIN_LIST = gql`
   query MAIN_LIST($page: Int, $filter: FilterCharacter) {
     characters(page: $page, filter: $filter) {
+      info {
+        pages
+      }
       results {
         id
         name

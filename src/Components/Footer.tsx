@@ -5,6 +5,7 @@ import CharactersTable from "./CharactersTable";
 import FilterBar from "./FilterBar";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import PageController from "./PageController";
+import Loader from "../Assets/Icons/Loader";
 
 type FormValues = {
   name: string;
@@ -17,9 +18,11 @@ const Footer: FC = () => {
   const [page, setPage] = useState(1);
   const [filterCharacters, setFilterCharacters] = useState({});
   const methods = useForm<FormValues>();
-  const { data } = useQuery(MAIN_LIST, {
+  const { data, loading } = useQuery(MAIN_LIST, {
     variables: { page: page, filter: filterCharacters },
   });
+
+  console.log(loading);
 
   const onSubmit: SubmitHandler<FormValues> = ({
     name,
@@ -36,17 +39,21 @@ const Footer: FC = () => {
   };
 
   return (
-    data && (
-      <div className="flex flex-col">
-        <FormProvider {...methods}>
-          <form>
-            <FilterBar onSubmit={methods.handleSubmit(onSubmit)} />
-            <CharactersTable characters={data.characters.results} />
-          </form>
-        </FormProvider>
-        <PageController page={page} setPage={setPage} />
-      </div>
-    )
+    <div className="flex flex-col">
+      <FormProvider {...methods}>
+        <form>
+          <FilterBar onSubmit={methods.handleSubmit(onSubmit)} />
+          {!data ? (
+            <div className="w-full h-[800px] grid place-items-center">
+              <Loader variant="black" />
+            </div>
+          ) : (
+            <CharactersTable characters={data.characters} />
+          )}
+        </form>
+      </FormProvider>
+      <PageController page={page} setPage={setPage} />
+    </div>
   );
 };
 

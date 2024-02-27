@@ -5,6 +5,7 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  PaginationState,
 } from "@tanstack/react-table";
 import { useQuery } from "@apollo/client";
 import { GET_CHARACTER } from "../Services/Queries";
@@ -13,15 +14,20 @@ import classNames from "classnames";
 import CharacterModal from "./CharacterModal";
 
 type Props = {
-  characters: TCharacters[];
+  characters: {
+    info: { pages: number };
+    results: TCharacters[];
+  };
+
 };
 
 const CharactersTable: FC<Props> = ({ characters }) => {
+ 
   const [open, setOpen] = useState<boolean>(false);
 
   const [characterId, setCharacterId] = useState<number>(0);
 
-  const { data, loading } = useQuery(GET_CHARACTER, {
+  const { data } = useQuery(GET_CHARACTER, {
     variables: { id: characterId },
   });
 
@@ -29,6 +35,18 @@ const CharactersTable: FC<Props> = ({ characters }) => {
     setCharacterId(id);
     setOpen(!open);
   };
+
+  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+    pageIndex: 1,
+    pageSize: characters?.info.pages,
+  });
+
+  const pagination = {
+    pageIndex,
+    pageSize,
+  };
+
+  console.log(pageIndex, pageSize);
 
   const columnHelper = createColumnHelper<TCharacters>();
 
@@ -112,27 +130,18 @@ const CharactersTable: FC<Props> = ({ characters }) => {
   ];
 
   const table = useReactTable({
-    data: characters,
+    data: characters.results,
     columns,
+    state: {
+      pagination,
+    },
     getCoreRowModel: getCoreRowModel(),
+    onPaginationChange: setPagination,
+    manualPagination: true,
+    debugTable: true,
   });
-  //наложить спинер-лоадер
-  //if (!characters || !data) return <div className="lds-dual-ring"></div>;
 
-  {
-    /* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-  <line x1="12" x2="12" y1="2" y2="6" />
-  <line x1="12" x2="12" y1="18" y2="22" />
-  <line x1="4.93" x2="7.76" y1="4.93" y2="7.76" />
-  <line x1="16.24" x2="19.07" y1="16.24" y2="19.07" />
-  <line x1="2" x2="6" y1="12" y2="12" />
-  <line x1="18" x2="22" y1="12" y2="12" />
-  <line x1="4.93" x2="7.76" y1="19.07" y2="16.24" />
-  <line x1="16.24" x2="19.07" y1="7.76" y2="4.93" />
-</svg> */
-  }
 
-  if (loading && !data) return <div></div>;
 
   return (
     <>

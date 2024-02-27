@@ -14,7 +14,6 @@ const Modal: FC<PropsWithChildren<Props>> = ({ open, onClose, children }) => {
         onClose(false);
       }
     };
-
     if (open) {
       document.addEventListener("keydown", closeByEscape);
       document.body.classList.add("overflow-hidden");
