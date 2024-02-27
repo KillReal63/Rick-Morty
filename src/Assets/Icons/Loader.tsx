@@ -1,10 +1,10 @@
-const Loader = ({ variant }: {variant: string}) => {
+const Loader = ({ variant }: { variant: string }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
-      width="24"
-      height="24"
+      width="36"
+      height="36"
       className="main-grid-item-icon animate-spin"
       fill="none"
       stroke={variant}

@@ -6,6 +6,9 @@ import {
   speciesOptions,
   statusOptions,
 } from "../Services/Options";
+import Send from "../Assets/Icons/Send";
+import Reset from "../Assets/Icons/Reset";
+import Dropdown from "../Assets/Icons/Dropdown";
 
 const FilterBar = ({
   onSubmit,
@@ -23,40 +26,12 @@ const FilterBar = ({
         onClick={() => setOpen(!open)}
       >
         <span className="text-white font-bold">Search:</span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          width="24"
-          height="24"
-          className="main-grid-item-icon"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-        >
-          <polyline points="6 9 12 15 18 9" />
-        </svg>
+        <Dropdown />
       </div>
       {open && (
         <div className="flex w-full items-center justify-around py-2">
           <button>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              width="24"
-              height="24"
-              className="main-grid-item-icon"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-            >
-              <polyline points="1 4 1 10 7 10" />
-              <polyline points="23 20 23 14 17 14" />
-              <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15" />
-            </svg>
+            <Reset />
           </button>
 
           <input
@@ -85,21 +60,7 @@ const FilterBar = ({
             options={statusOptions}
           />
           <button onClick={(e) => onSubmit(e)}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              width="24"
-              height="24"
-              className="main-grid-item-icon"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-            >
-              <line x1="5" x2="19" y1="12" y2="12" />
-              <polyline points="12 5 19 12 12 19" />
-            </svg>
+            <Send />
           </button>
         </div>
       )}

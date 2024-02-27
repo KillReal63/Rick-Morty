@@ -22,7 +22,7 @@ const Main = () => {
         </>
       ) : (
         <div className="grid place-items-center">
-          <Loader variant="white"/>
+          <Loader variant="white" />
         </div>
       )}
     </div>
