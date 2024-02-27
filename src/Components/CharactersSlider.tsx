@@ -1,8 +1,9 @@
+import classNames from "classnames";
 import { StatusIcon } from "../Assets/Icons/StatusIcon";
 import Slider from "react-slick";
+import { ChangeEvent, useEffect, useState } from "react";
 const settings = {
   infinite: true,
-  slidesToShow: 3,
   slidesToScroll: 1,
   autoplay: true,
   speed: 2000,
@@ -32,9 +33,25 @@ export type TCharacters = {
 };
 
 const CharactersSlider = ({ data }: { data: TCharacters[] }) => {
+  const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
+
+  useEffect(() => {
+    const handleChange = () => {
+      setScreenWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleChange);
+
+    return () => window.removeEventListener("resize", handleChange);
+  }, []);
+
+  console.log(screenWidth);
+
   return (
-    <div className="w-[1850px] h-[260px]">
-      <Slider {...settings}>
+    <div className={classNames("w-[1050px] h-[260px]")}>
+      <Slider
+        slidesToShow={screenWidth > 1850 ? 3 : screenWidth > 768 ? 2 : 1}
+        {...settings}
+      >
         {data.map(({ image, name, status, species, location, episode, id }) => (
           <div key={id}>
             <div className="w-[600px] h-[220px] flex bg-character rounded-lg m-3">
