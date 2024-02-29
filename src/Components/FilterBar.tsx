@@ -19,6 +19,8 @@ const FilterBar = ({
 
   const { register, control } = useFormContext();
 
+  //добавить адаптацию для селекта
+
   return (
     <div>
       <div

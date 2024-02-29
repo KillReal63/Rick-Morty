@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { TCharacters } from "./CharactersSlider";
 import {
   createColumnHelper,
@@ -18,11 +18,9 @@ type Props = {
     info: { pages: number };
     results: TCharacters[];
   };
-
 };
 
 const CharactersTable: FC<Props> = ({ characters }) => {
- 
   const [open, setOpen] = useState<boolean>(false);
 
   const [characterId, setCharacterId] = useState<number>(0);
@@ -30,6 +28,17 @@ const CharactersTable: FC<Props> = ({ characters }) => {
   const { data } = useQuery(GET_CHARACTER, {
     variables: { id: characterId },
   });
+
+  const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
+
+  useEffect(() => {
+    const handleChange = () => {
+      setScreenWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleChange);
+
+    return () => window.removeEventListener("resize", handleChange);
+  }, []);
 
   const handleToggleModal = (id: number) => {
     setCharacterId(id);
@@ -46,7 +55,7 @@ const CharactersTable: FC<Props> = ({ characters }) => {
     pageSize,
   };
 
- // console.log(pageIndex, pageSize);
+  // console.log(pageIndex, pageSize);
 
   const columnHelper = createColumnHelper<TCharacters>();
 
@@ -65,11 +74,17 @@ const CharactersTable: FC<Props> = ({ characters }) => {
           header: "Name",
           cell: (info) => {
             return (
-              <>
+              <div
+                style={{
+                  width: info.column.getSize(),
+                }}
+              >
                 <button onClick={() => handleToggleModal(info.row.original.id)}>
-                  {info.getValue()}
+                  {info.getValue().length > 10 && screenWidth <= 1850
+                    ? info.getValue().slice(0, 10) + "..."
+                    : info.getValue()}
                 </button>
-              </>
+              </div>
             );
           },
           footer: (info) => info.column.id,
@@ -91,7 +106,21 @@ const CharactersTable: FC<Props> = ({ characters }) => {
         }),
         columnHelper.accessor("origin.name", {
           header: "Planet Name",
-          cell: (info) => info.getValue(),
+          cell: (info) => {
+            return (
+              <p
+                style={{
+                  width: info.column.getSize(),
+                }}
+              >
+                {info.getValue().length > 5 && screenWidth <= 1850
+                  ? screenWidth < 1300
+                    ? info.getValue().slice(0, 5) + "..."
+                    : info.getValue().slice(0, 10) + "..."
+                  : info.getValue()}
+              </p>
+            );
+          },
           footer: (info) => info.column.id,
         }),
       ],
@@ -102,26 +131,88 @@ const CharactersTable: FC<Props> = ({ characters }) => {
       columns: [
         columnHelper.accessor("location.name", {
           header: "Location Name",
-          cell: (info) => info.getValue(),
+          cell: (info) => {
+            return (
+              <p
+                style={{
+                  width: info.column.getSize(),
+                }}
+              >
+                {info.getValue().length > 5 && screenWidth <= 1850
+                  ? screenWidth < 1300
+                    ? info.getValue().slice(0, 5) + "..."
+                    : info.getValue().slice(0, 10) + "..."
+                  : info.getValue()}
+              </p>
+            );
+          },
           footer: (info) => info.column.id,
         }),
         columnHelper.accessor("location.type", {
           header: "Location Type",
-          cell: (info) => info.getValue(),
+          cell: (info) => {
+            return (
+              <p
+                style={{
+                  width: info.column.getSize(),
+                }}
+              >
+                {info.getValue() !== null &&
+                info.getValue().length > 5 &&
+                screenWidth <= 1850
+                  ? screenWidth < 1300
+                    ? info.getValue().slice(0, 5) + "..."
+                    : info.getValue().slice(0, 10) + "..."
+                  : info.getValue()}
+              </p>
+            );
+          },
           footer: (info) => info.column.id,
         }),
         columnHelper.accessor("location.dimension", {
           header: () => <span>Dimension</span>,
-          cell: (info) => info.getValue(),
+          cell: (info) => {
+            return (
+              <p
+                style={{
+                  width: info.column.getSize(),
+                }}
+              >
+                {info.getValue() !== null &&
+                info.getValue().length > 5 &&
+                screenWidth <= 1850
+                  ? screenWidth < 1300
+                    ? info.getValue().slice(0, 5) + "..."
+                    : info.getValue().slice(0, 10) + "..."
+                  : info.getValue()}
+              </p>
+            );
+          },
           footer: (info) => info.column.id,
         }),
         columnHelper.accessor("location.residents", {
           header: () => <span>First Resident</span>,
           cell: (info) => {
-            const residents = info.getValue();
-            return Array.isArray(residents) && residents.length > 0
-              ? residents[0].name
-              : "N/A";
+            {
+              const residents = info.getValue();
+
+              return (
+                <p
+                  style={{
+                    width: info.column.getSize(),
+                  }}
+                >
+                  {Array.isArray(residents) &&
+                  residents.length > 0 &&
+                  info.getValue().length > 5 &&
+                  screenWidth <= 1850
+                    ? screenWidth < 1300
+                      ? residents[0].name.slice(0, 5) + "..."
+                      : residents[0].name.slice(0, 10) + "..."
+                    : "N/A"}
+                </p>
+              );
+            }
           },
           footer: (info) => info.column.id,
         }),
@@ -132,6 +223,11 @@ const CharactersTable: FC<Props> = ({ characters }) => {
   const table = useReactTable({
     data: characters.results,
     columns,
+    defaultColumn: {
+      size: screenWidth >= 1850 ? 150 : screenWidth > 1300 ? 100 : 75,
+      minSize: 50,
+      maxSize: 150,
+    },
     state: {
       pagination,
     },
@@ -140,8 +236,6 @@ const CharactersTable: FC<Props> = ({ characters }) => {
     manualPagination: true,
     debugTable: true,
   });
-
-
 
   return (
     <>
@@ -175,7 +269,7 @@ const CharactersTable: FC<Props> = ({ characters }) => {
               {row.getVisibleCells().map((cell) => (
                 <td
                   key={cell.id}
-                  className={classNames("py-3 px-4", {
+                  className={classNames("py-2 px-4", {
                     "text-green-600": cell.getValue() === "Alive",
                     "text-red-600": cell.getValue() === "Dead",
                   })}
