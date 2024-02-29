@@ -22,7 +22,7 @@ const Footer: FC = () => {
     variables: { page: page, filter: filterCharacters },
   });
 
-  console.log(loading);
+ // console.log(loading);
 
   const onSubmit: SubmitHandler<FormValues> = ({
     name,

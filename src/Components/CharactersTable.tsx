@@ -46,7 +46,7 @@ const CharactersTable: FC<Props> = ({ characters }) => {
     pageSize,
   };
 
-  console.log(pageIndex, pageSize);
+ // console.log(pageIndex, pageSize);
 
   const columnHelper = createColumnHelper<TCharacters>();
 
