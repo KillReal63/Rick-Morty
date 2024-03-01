@@ -9,6 +9,8 @@ import {
 import Send from "../Assets/Icons/Send";
 import Reset from "../Assets/Icons/Reset";
 import Dropdown from "../Assets/Icons/Dropdown";
+import classNames from "classnames";
+import useScreenWidth from "../helpers/useScreenWidth";
 
 const FilterBar = ({
   onSubmit,
@@ -19,7 +21,7 @@ const FilterBar = ({
 
   const { register, control } = useFormContext();
 
-  //добавить адаптацию для селекта
+  const screenWidth = useScreenWidth();
 
   return (
     <div>
@@ -35,10 +37,12 @@ const FilterBar = ({
           <button>
             <Reset />
           </button>
-
           <input
             placeholder="Поиск по имени"
-            className="w-[250px] border-2 p-1 rounded-md"
+            className={classNames(
+              "border-2 p-1 rounded-md",
+              screenWidth > 1300 ? "w-[250px]" : "w-[150px]"
+            )}
             {...register("name", {
               pattern: /[a-zA-Z0-9]/,
             })}

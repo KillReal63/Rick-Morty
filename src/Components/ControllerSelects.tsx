@@ -1,5 +1,7 @@
+import classNames from "classnames";
 import { Control, Controller } from "react-hook-form";
 import Select from "react-select";
+import useScreenWidth from "../helpers/useScreenWidth";
 
 const ControllerSelects = ({
   label,
@@ -15,8 +17,10 @@ const ControllerSelects = ({
   }[];
   control: Control;
 }) => {
+  const screenWidth = useScreenWidth();
+
   return (
-    <div className="w-[250px]">
+    <div className={classNames(screenWidth > 1300 ? "w-[250px]" : "w-[150px]")}>
       <Controller
         name={name}
         control={control}

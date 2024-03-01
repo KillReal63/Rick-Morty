@@ -1,6 +1,7 @@
-import { StatusIcon } from "../Assets/Icons/StatusIcon";
 import Slider from "react-slick";
-import { useEffect, useState } from "react";
+import useScreenWidth from "../helpers/useScreenWidth";
+import { StatusIcon } from "../Assets/Icons/StatusIcon";
+
 const settings = {
   infinite: true,
   slidesToScroll: 1,
@@ -32,16 +33,7 @@ export type TCharacters = {
 };
 
 const CharactersSlider = ({ data }: { data: TCharacters[] }) => {
-  const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
-
-  useEffect(() => {
-    const handleChange = () => {
-      setScreenWidth(window.innerWidth);
-    };
-    window.addEventListener("resize", handleChange);
-
-    return () => window.removeEventListener("resize", handleChange);
-  }, []);
+  const screenWidth = useScreenWidth();
 
   return (
     <div className="h-[260px] w-[620px] lg:w-[1250px] xl:w-[1850px]">

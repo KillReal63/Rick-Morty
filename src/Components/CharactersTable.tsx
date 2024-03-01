@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { TCharacters } from "./CharactersSlider";
 import {
   createColumnHelper,
@@ -12,6 +12,7 @@ import { GET_CHARACTER } from "../Services/Queries";
 import Modal from "./Modal";
 import classNames from "classnames";
 import CharacterModal from "./CharacterModal";
+import useScreenWidth from "../helpers/useScreenWidth";
 
 type Props = {
   characters: {
@@ -29,16 +30,7 @@ const CharactersTable: FC<Props> = ({ characters }) => {
     variables: { id: characterId },
   });
 
-  const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
-
-  useEffect(() => {
-    const handleChange = () => {
-      setScreenWidth(window.innerWidth);
-    };
-    window.addEventListener("resize", handleChange);
-
-    return () => window.removeEventListener("resize", handleChange);
-  }, []);
+  const screenWidth = useScreenWidth();
 
   const handleToggleModal = (id: number) => {
     setCharacterId(id);
