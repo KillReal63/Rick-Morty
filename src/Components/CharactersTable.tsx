@@ -155,7 +155,7 @@ const CharactersTable: FC<Props> = ({ characters }) => {
                   ? screenWidth < 1300
                     ? info.getValue().slice(0, 5) + "..."
                     : info.getValue().slice(0, 10) + "..."
-                  : info.getValue()}
+                  : info.getValue() || "N/A"}
               </p>
             );
           },
@@ -176,7 +176,7 @@ const CharactersTable: FC<Props> = ({ characters }) => {
                   ? screenWidth < 1300
                     ? info.getValue().slice(0, 5) + "..."
                     : info.getValue().slice(0, 10) + "..."
-                  : info.getValue()}
+                  : info.getValue() || "N/A"}
               </p>
             );
           },
@@ -185,27 +185,25 @@ const CharactersTable: FC<Props> = ({ characters }) => {
         columnHelper.accessor("location.residents", {
           header: () => <span>First Resident</span>,
           cell: (info) => {
-            {
-              const residents = info.getValue();
+            const residents = info.getValue();
+            //Array.isArray(residents)
 
-              return (
-                <p
-                  style={{
-                    width: info.column.getSize(),
-                  }}
-                >
-                  {Array.isArray(residents) &&
-                  residents.length > 0 &&
-                  info.getValue().length > 5 &&
-                  screenWidth <= 1850
-                    ? screenWidth < 1300
-                      ? residents[0].name.slice(0, 5) + "..."
-                      : residents[0].name.slice(0, 10) + "..."
-                    : "N/A"}
-                </p>
-              );
-            }
+            //info.getValue().length > 5 &&
+            return (
+              <p
+                style={{
+                  width: info.column.getSize(),
+                }}
+              >
+                {screenWidth > 1900
+                  ? residents[0]?.name || "N/A"
+                  : screenWidth > 1300
+                  ? residents[0]?.name.slice(0, 10) || "N/A"
+                  : residents[0]?.name.slice(0, 5) || "N/A"}
+              </p>
+            );
           },
+
           footer: (info) => info.column.id,
         }),
       ],
