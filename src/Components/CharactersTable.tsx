@@ -186,24 +186,22 @@ const CharactersTable: FC<Props> = ({ characters }) => {
           header: () => <span>First Resident</span>,
           cell: (info) => {
             const residents = info.getValue();
-            //Array.isArray(residents)
-
-            //info.getValue().length > 5 &&
             return (
               <p
                 style={{
                   width: info.column.getSize(),
                 }}
               >
-                {screenWidth > 1900
-                  ? residents[0]?.name || "N/A"
-                  : screenWidth > 1300
-                  ? residents[0]?.name.slice(0, 10) || "N/A"
-                  : residents[0]?.name.slice(0, 5) || "N/A"}
+                {residents[0]?.name !== undefined
+                  ? screenWidth > 1900
+                    ? residents[0]?.name
+                    : screenWidth > 1300
+                    ? `${residents[0]?.name.slice(0, 10)}...`
+                    : `${residents[0]?.name.slice(0, 5)}...`
+                  : "N/A"}
               </p>
             );
           },
-
           footer: (info) => info.column.id,
         }),
       ],
