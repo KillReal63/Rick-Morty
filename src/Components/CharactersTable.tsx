@@ -8,25 +8,33 @@ import {
   PaginationState,
 } from "@tanstack/react-table";
 import { useQuery } from "@apollo/client";
-import { GET_CHARACTER } from "../Services/Queries";
+import { GET_CHARACTER, MAIN_LIST } from "../Services/Queries";
 import Modal from "./Modal";
 import classNames from "classnames";
 import CharacterModal from "./CharacterModal";
 import useScreenWidth from "../helpers/useScreenWidth";
+import PageController from "./PageController";
+import Loader from "../Assets/Icons/Loader";
 
 type Props = {
-  characters: {
-    info: { pages: number };
-    results: TCharacters[];
+  filterCharacters: {
+    name: string;
+    gender: string;
+    species: string;
+    status: string;
   };
 };
 
-const CharactersTable: FC<Props> = ({ characters }) => {
+const CharactersTable: FC<Props> = ({ filterCharacters }) => {
   const [open, setOpen] = useState<boolean>(false);
-
+  const [page, setPage] = useState<number>(1);
   const [characterId, setCharacterId] = useState<number>(0);
 
-  const { data } = useQuery(GET_CHARACTER, {
+  const { data, loading } = useQuery(MAIN_LIST, {
+    variables: { page: page, filter: filterCharacters },
+  });
+
+  const characterData = useQuery(GET_CHARACTER, {
     variables: { id: characterId },
   });
 
@@ -38,8 +46,8 @@ const CharactersTable: FC<Props> = ({ characters }) => {
   };
 
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
-    pageIndex: 1,
-    pageSize: characters?.info.pages,
+    pageIndex: page,
+    pageSize: data?.characters.info.pages,
   });
 
   const pagination = {
@@ -47,7 +55,9 @@ const CharactersTable: FC<Props> = ({ characters }) => {
     pageSize,
   };
 
-  // console.log(pageIndex, pageSize);
+
+  console.log(pagination);
+  
 
   const columnHelper = createColumnHelper<TCharacters>();
 
@@ -209,7 +219,7 @@ const CharactersTable: FC<Props> = ({ characters }) => {
   ];
 
   const table = useReactTable({
-    data: characters.results,
+    data: data?.characters.results,
     columns,
     defaultColumn: {
       size: screenWidth >= 1850 ? 150 : screenWidth > 1300 ? 100 : 75,
@@ -224,6 +234,13 @@ const CharactersTable: FC<Props> = ({ characters }) => {
     manualPagination: true,
     debugTable: true,
   });
+
+  if (loading)
+    return (
+      <div className="w-full h-[800px] grid place-items-center">
+        <Loader variant="black" />
+      </div>
+    );
 
   return (
     <>
@@ -269,9 +286,10 @@ const CharactersTable: FC<Props> = ({ characters }) => {
           ))}
         </tbody>
       </table>
-      {data && open && (
+      <PageController page={page} setPage={setPage} pageSize={pageSize} />
+      {characterData.data && open && (
         <Modal onClose={setOpen} open={open}>
-          <CharacterModal character={data.character} />
+          <CharacterModal character={characterData.data.character} />
         </Modal>
       )}
     </>

@@ -5,56 +5,37 @@ import Forward from "../Assets/Icons/Forward";
 type Props = {
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
+  pageSize: number;
 };
 
-const PageController: React.FC<Props> = ({ page, setPage }) => {
-  const [inputValue, setInputValue] = useState(1);
+const PageController: React.FC<Props> = ({ page, setPage, pageSize }) => {
+  console.log(pageSize);
 
-  const switchPage = (variant: string) => {
-    switch (variant) {
-      case "next":
-        setPage((prevValue) => prevValue + 1);
-        setInputValue((prevValue) => prevValue + 1);
-        break;
-      case "previous":
-        if (page - 1 >= 1) {
-          setPage((prevValue) => prevValue - 1);
-          setInputValue((prevValue) => prevValue - 1);
-        }
-        break;
-      case "first":
-        setPage(1);
-        setInputValue(1);
-        break;
-      default:
-        break;
-    }
-  };
+  const [inputPage, setInputPage] = useState<number>(page);
 
   const handleKeyPress = (event: KeyboardEvent): void => {
     const target = event.target as HTMLInputElement;
 
     if (event.key === "Enter" && target.value !== undefined) {
-      setPage(Number(target.value));
-    }
-
-    if (target.value === "0") {
-      switchPage("first");
+      if (inputPage <= pageSize && inputPage > 0) {
+        setPage(inputPage);
+      } else {
+        setPage(1);
+      }
     }
   };
 
   return (
     <div className="flex w-full justify-center items-center mb-8">
-      <button onClick={() => switchPage("previous")}>
+      <button type="button" onClick={() => setPage(page - 1)}>
         <Back />
       </button>
       <input
         type="text"
-        min={1}
         maxLength={2}
         className="max-w-8 font-bold text-2xl appearance-none text-center"
-        value={inputValue}
-        onChange={(e) => setInputValue(Number(e.target.value))}
+        value={inputPage}
+        onChange={(e) => setInputPage(Number(e.target.value))}
         onFocus={() =>
           document.addEventListener(
             "keypress",
@@ -69,7 +50,7 @@ const PageController: React.FC<Props> = ({ page, setPage }) => {
         }
         onKeyDown={handleKeyPress}
       />
-      <button onClick={() => switchPage("next")}>
+      <button type="button" onClick={() => setPage(page + 1)}>
         <Forward />
       </button>
     </div>

@@ -1,12 +1,7 @@
-import { useQuery } from "@apollo/client";
 import { useState, FC } from "react";
-import { MAIN_LIST } from "../Services/Queries";
 import CharactersTable from "./CharactersTable";
 import FilterBar from "./FilterBar";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import PageController from "./PageController";
-import Loader from "../Assets/Icons/Loader";
-
 type FormValues = {
   name: string;
   gender: { value: string };
@@ -15,14 +10,13 @@ type FormValues = {
 };
 
 const Footer: FC = () => {
-  const [page, setPage] = useState(1);
-  const [filterCharacters, setFilterCharacters] = useState({});
-  const methods = useForm<FormValues>();
-  const { data, loading } = useQuery(MAIN_LIST, {
-    variables: { page: page, filter: filterCharacters },
+  const [filterCharacters, setFilterCharacters] = useState({
+    name: "",
+    gender: "",
+    species: "",
+    status: "",
   });
-
-  // console.log(loading);
+  const methods = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = ({
     name,
@@ -43,16 +37,9 @@ const Footer: FC = () => {
       <FormProvider {...methods}>
         <form>
           <FilterBar onSubmit={methods.handleSubmit(onSubmit)} />
-          {!data ? (
-            <div className="w-full h-[800px] grid place-items-center">
-              <Loader variant="black" />
-            </div>
-          ) : (
-            <CharactersTable characters={data.characters} />
-          )}
+          <CharactersTable filterCharacters={filterCharacters} />
         </form>
       </FormProvider>
-      <PageController page={page} setPage={setPage} />
     </div>
   );
 };
