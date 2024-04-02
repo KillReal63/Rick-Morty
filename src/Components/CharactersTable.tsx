@@ -5,7 +5,6 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
-  PaginationState,
 } from "@tanstack/react-table";
 import { useQuery } from "@apollo/client";
 import { GET_CHARACTER, MAIN_LIST } from "../Services/Queries";
@@ -34,7 +33,7 @@ const CharactersTable: FC<Props> = ({ filterCharacters }) => {
     variables: { page: page, filter: filterCharacters },
   });
 
-  const characterData = useQuery(GET_CHARACTER, {
+  const { data: characterData } = useQuery(GET_CHARACTER, {
     variables: { id: characterId },
   });
 
@@ -44,20 +43,6 @@ const CharactersTable: FC<Props> = ({ filterCharacters }) => {
     setCharacterId(id);
     setOpen(!open);
   };
-
-  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
-    pageIndex: page,
-    pageSize: data?.characters.info.pages,
-  });
-
-  const pagination = {
-    pageIndex,
-    pageSize,
-  };
-
-
-  console.log(pagination);
-  
 
   const columnHelper = createColumnHelper<TCharacters>();
 
@@ -81,7 +66,10 @@ const CharactersTable: FC<Props> = ({ filterCharacters }) => {
                   width: info.column.getSize(),
                 }}
               >
-                <button onClick={() => handleToggleModal(info.row.original.id)}>
+                <button
+                  type="button"
+                  onClick={() => handleToggleModal(info.row.original.id)}
+                >
                   {info.getValue().length > 10 && screenWidth <= 1850
                     ? info.getValue().slice(0, 10) + "..."
                     : info.getValue()}
@@ -226,11 +214,7 @@ const CharactersTable: FC<Props> = ({ filterCharacters }) => {
       minSize: 50,
       maxSize: 150,
     },
-    state: {
-      pagination,
-    },
     getCoreRowModel: getCoreRowModel(),
-    onPaginationChange: setPagination,
     manualPagination: true,
     debugTable: true,
   });
@@ -241,6 +225,8 @@ const CharactersTable: FC<Props> = ({ filterCharacters }) => {
         <Loader variant="black" />
       </div>
     );
+
+
 
   return (
     <>
@@ -286,10 +272,10 @@ const CharactersTable: FC<Props> = ({ filterCharacters }) => {
           ))}
         </tbody>
       </table>
-      <PageController page={page} setPage={setPage} pageSize={pageSize} />
-      {characterData.data && open && (
+      <PageController page={page} setPage={setPage} maxPages={data?.characters.info.pages}/>
+      {characterData && open && (
         <Modal onClose={setOpen} open={open}>
-          <CharacterModal character={characterData.data.character} />
+          <CharacterModal character={characterData.character} />
         </Modal>
       )}
     </>
