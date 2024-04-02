@@ -34,4 +34,4 @@ Rick and Morty GraphQL - это веб-приложение, созданное 
 
 Приложение будет доступно по адресу [http://localhost:5173](http://localhost:5173)
 
-Демонстрация проекта с помощью [GitHub Pages]()
+Демонстрация проекта с помощью [GitHub Pages](https://killreal63.github.io/Rick-Morty/)
