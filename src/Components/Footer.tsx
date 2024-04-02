@@ -23,7 +23,7 @@ const Footer: FC = () => {
     gender,
     species,
     status,
-  }) => {
+  }): void => {
     setFilterCharacters({
       name: name ? name : "",
       gender: gender ? gender.value : "",

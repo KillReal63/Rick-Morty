@@ -39,7 +39,7 @@ const CharactersTable: FC<Props> = ({ filterCharacters }) => {
 
   const screenWidth = useScreenWidth();
 
-  const handleToggleModal = (id: number) => {
+  const handleToggleModal = (id: number): void => {
     setCharacterId(id);
     setOpen(!open);
   };
@@ -215,8 +215,6 @@ const CharactersTable: FC<Props> = ({ filterCharacters }) => {
       maxSize: 150,
     },
     getCoreRowModel: getCoreRowModel(),
-    manualPagination: true,
-    debugTable: true,
   });
 
   if (loading)
@@ -225,8 +223,6 @@ const CharactersTable: FC<Props> = ({ filterCharacters }) => {
         <Loader variant="black" />
       </div>
     );
-
-
 
   return (
     <>
@@ -272,7 +268,11 @@ const CharactersTable: FC<Props> = ({ filterCharacters }) => {
           ))}
         </tbody>
       </table>
-      <PageController page={page} setPage={setPage} maxPages={data?.characters.info.pages}/>
+      <PageController
+        page={page}
+        setPage={setPage}
+        maxPages={data?.characters.info.pages}
+      />
       {characterData && open && (
         <Modal onClose={setOpen} open={open}>
           <CharacterModal character={characterData.character} />

@@ -6,11 +6,11 @@ import {
   speciesOptions,
   statusOptions,
 } from "../Services/Options";
+import useScreenWidth from "../helpers/useScreenWidth";
 import Send from "../Assets/Icons/Send";
 import Reset from "../Assets/Icons/Reset";
 import Dropdown from "../Assets/Icons/Dropdown";
 import classNames from "classnames";
-import useScreenWidth from "../helpers/useScreenWidth";
 
 const FilterBar = ({
   onSubmit,
@@ -34,7 +34,7 @@ const FilterBar = ({
       </div>
       {open && (
         <div className="flex w-full items-center justify-around py-2">
-          <button>
+          <button type="button" onClick={() => location.reload()}>
             <Reset />
           </button>
           <input
@@ -65,7 +65,7 @@ const FilterBar = ({
             control={control}
             options={statusOptions}
           />
-          <button onClick={(e) => onSubmit(e)}>
+          <button type="button" onClick={(e) => onSubmit(e)}>
             <Send />
           </button>
         </div>

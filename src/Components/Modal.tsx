@@ -9,7 +9,7 @@ type Props = {
 
 const Modal: FC<PropsWithChildren<Props>> = ({ open, onClose, children }) => {
   useEffect(() => {
-    const closeByEscape = (event: KeyboardEvent) => {
+    const closeByEscape = (event: KeyboardEvent): void => {
       if (event.key === "Escape") {
         onClose(false);
       }
