@@ -17,11 +17,15 @@ type Props = {
 
 const CharacterModal: FC<Props> = ({ character }) => {
   const [open, setOpen] = useState<boolean>(false);
-  const [characterId, setCharacterId] = useState<string>("");
+  const [characterEpisodeId, setCharacterEpisodeId] = useState<string>("");
+  // const [episodeArr, setEpisodeArr] = useState<string[]>([]);
 
   const handleOpenModal = (id: string) => {
-    setCharacterId(id);
+    setCharacterEpisodeId(id);
     setOpen(!open);
+    // if (!episodeArr.includes(id)) {
+    //   setEpisodeArr([...episodeArr, id]);
+    // }
   };
 
   return (
@@ -119,9 +123,9 @@ const CharacterModal: FC<Props> = ({ character }) => {
                   <span className="font-semibold">{episode}</span>{" "}
                   <span className="text-lg font-mono">{name}</span>
                 </div>
-                {open && id === characterId && (
+                {open && id === characterEpisodeId && (
                   <div
-                    className="flex justify-around p-2 cursor-pointer hover:bg-gray-100"
+                    className="flex justify-around p-2 cursor-pointer hover:bg-gray-100 mb-5"
                     onClick={() => handleOpenModal(id)}
                   >
                     <div className="flex flex-col gap-5 text-2xl px-10">
